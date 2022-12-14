@@ -1,0 +1,27 @@
+#!/bin/sh
+
+# Pushes/publishes the current branch and pushes all missing tags from the local repository.ls
+#
+# Usage;
+# bin/publish
+
+SCRIPT_PATH=$( cd "$(dirname "${BASH_SOURCE[0]}")" ; pwd -P )
+BASE_PATH=$(dirname "$SCRIPT_PATH")
+
+source "$BASE_PATH/config/bin.cfg"
+source "$SCRIPT_PATH/util/find-wp"
+source "$SCRIPT_PATH/util/git"
+
+COMMAND_PUSH="git push && git push --tags"
+
+function success {
+  echo "Successfully published the latest tags."
+}
+
+IFS='%'
+find_wp
+git_push $COMMAND_PUSH
+success
+unset IFS
+
+exit 0
